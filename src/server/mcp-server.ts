@@ -34,7 +34,7 @@ export async function createMCPServer() {
       tools: [
         {
           name: 'listHeroes',
-          description: 'Get a list of all Marvel Rivals heroes',
+          description: 'Retrieve complete roster of playable Marvel heroes. Returns all available characters with their basic info, roles (Vanguard/Duelist/Strategist), and identifiers for further queries.',
           inputSchema: {
             type: 'object',
             properties: {},
@@ -42,7 +42,7 @@ export async function createMCPServer() {
         },
         {
           name: 'getHeroAbilities',
-          description: 'Get abilities for a specific hero',
+          description: 'Fetch detailed ability kit for a specific hero including primary fire, abilities, ultimate, and passives. Essential for understanding hero mechanics and cooldowns.',
           inputSchema: {
             type: 'object',
             properties: {
@@ -56,7 +56,7 @@ export async function createMCPServer() {
         },
         {
           name: 'getHeroInfo',
-          description: 'Get detailed information about a hero including abilities',
+          description: 'Comprehensive hero data: stats, abilities, lore, difficulty rating, role details. Best for complete hero overview including gameplay tips and synergies.',
           inputSchema: {
             type: 'object',
             properties: {
@@ -70,7 +70,7 @@ export async function createMCPServer() {
         },
         {
           name: 'getHeroSkins',
-          description: 'Get skins for a specific hero',
+          description: 'List all cosmetic skins/outfits available for a hero. Includes rarity tiers, unlock methods, and visual variants.',
           inputSchema: {
             type: 'object',
             properties: {
@@ -84,7 +84,7 @@ export async function createMCPServer() {
         },
         {
           name: 'listSkins',
-          description: 'Get a list of all available skins',
+          description: 'Browse entire game skin catalog across all heroes. Useful for finding cosmetics by rarity, event, or collection.',
           inputSchema: {
             type: 'object',
             properties: {},
@@ -92,7 +92,7 @@ export async function createMCPServer() {
         },
         {
           name: 'listAchievements',
-          description: 'Get a list of all achievements',
+          description: 'Full achievement/trophy list with unlock conditions, points, and progression tracking. Covers hero-specific and general gameplay milestones.',
           inputSchema: {
             type: 'object',
             properties: {},
@@ -100,7 +100,7 @@ export async function createMCPServer() {
         },
         {
           name: 'searchAchievement',
-          description: 'Search for achievements by name',
+          description: 'Find specific achievements by partial name match. Helpful for tracking progress on particular challenges or hero mastery.',
           inputSchema: {
             type: 'object',
             properties: {
@@ -114,7 +114,7 @@ export async function createMCPServer() {
         },
         {
           name: 'listItems',
-          description: 'Get a list of all items',
+          description: 'Catalog of all cosmetic items: nameplates, MVP animations, emotes, sprays. Shows unlock methods and rarity distribution.',
           inputSchema: {
             type: 'object',
             properties: {},
@@ -122,7 +122,7 @@ export async function createMCPServer() {
         },
         {
           name: 'getItemsByType',
-          description: 'Get items filtered by type',
+          description: 'Filter cosmetics by category (NAMEPLATE/MVP/EMOTE/SPRAY). Perfect for browsing specific customization options.',
           inputSchema: {
             type: 'object',
             properties: {
@@ -137,7 +137,7 @@ export async function createMCPServer() {
         },
         {
           name: 'listMaps',
-          description: 'Get a list of all game maps',
+          description: 'All playable maps with layouts, objectives, and modes. Includes map-specific strategies and callout locations.',
           inputSchema: {
             type: 'object',
             properties: {},
@@ -145,7 +145,7 @@ export async function createMCPServer() {
         },
         {
           name: 'filterMaps',
-          description: 'Get maps filtered by type or mode',
+          description: 'Filter maps by game mode (convoy/convergence) or queue type (competitive/casual). Essential for mode-specific strategies.',
           inputSchema: {
             type: 'object',
             properties: {
@@ -160,7 +160,7 @@ export async function createMCPServer() {
         },
         {
           name: 'getPlayerProfile',
-          description: 'Get detailed player profile information',
+          description: 'Comprehensive player stats: rank, main heroes, win rates, playtime, seasonal performance. Accepts player ID or battletag.',
           inputSchema: {
             type: 'object',
             properties: {
@@ -174,7 +174,7 @@ export async function createMCPServer() {
         },
         {
           name: 'searchPlayer',
-          description: 'Search for a player by username',
+          description: 'Find players by username/battletag. Returns matching profiles with basic stats for player lookup and comparison.',
           inputSchema: {
             type: 'object',
             properties: {
@@ -188,7 +188,7 @@ export async function createMCPServer() {
         },
         {
           name: 'getPlayerMatchHistory',
-          description: 'Get match history for a player',
+          description: 'Recent match results with heroes played, performance metrics, map details, and outcome. Tracks improvement and hero performance trends.',
           inputSchema: {
             type: 'object',
             properties: {

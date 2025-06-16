@@ -39,7 +39,7 @@ export class MarvelsApiProvider implements IProvider {
   }
 
   async getHeroAbilities(identifier: string): Promise<Ability[]> {
-    return this.request<Ability[]>(`/heroes/abilities/${identifier}`);
+    return this.request<Ability[]>(`/heroes/abilities/identifier?id=${identifier}`);
   }
 
   async getHeroInfo(identifier: string): Promise<HeroFull> {
@@ -51,7 +51,7 @@ export class MarvelsApiProvider implements IProvider {
   }
 
   async getHeroSkins(id: string): Promise<Skin[]> {
-    return this.request<Skin[]>(`/heroes/skins/${id}`);
+    return this.request<Skin[]>(`/heroes/skins/id?id=${id}`);
   }
 
   async listSkins(): Promise<Skin[]> {
@@ -71,7 +71,7 @@ export class MarvelsApiProvider implements IProvider {
   }
 
   async getItemsByType(type: 'NAMEPLATE' | 'MVP' | 'EMOTE' | 'SPRAY'): Promise<Item[]> {
-    return this.request<Item[]>(`/items/${type}`);
+    return this.request<Item[]>(`/items/${type}?item_type=${type}`);
   }
 
   async listMaps(): Promise<GameMap[]> {
