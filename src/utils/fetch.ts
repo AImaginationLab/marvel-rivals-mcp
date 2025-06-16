@@ -20,7 +20,9 @@ export class FetchError extends Error {
 }
 
 async function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
 
 export async function fetchWithRetry(
@@ -34,7 +36,7 @@ export async function fetchWithRetry(
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), timeout);
+      const timeoutId = setTimeout(() => { controller.abort(); }, timeout);
 
       const response = await fetch(url, {
         ...fetchOptions,
@@ -47,20 +49,20 @@ export async function fetchWithRetry(
         if (response.status === 429) {
           const retryAfter = response.headers.get('Retry-After');
           const delay = retryAfter ? parseInt(retryAfter, 10) * 1000 : retryDelay * (attempt + 1);
-          logger.warn(`Rate limited. Retrying after ${delay}ms`);
+          logger.warn(`Rate limited. Retrying after ${String(delay)}ms`);
           await sleep(delay);
           continue;
         }
 
         if (response.status >= 500 && attempt < retries) {
           const delay = retryDelay * (attempt + 1);
-          logger.warn(`Server error ${response.status}. Retrying after ${delay}ms`);
+          logger.warn(`Server error ${String(response.status)}. Retrying after ${String(delay)}ms`);
           await sleep(delay);
           continue;
         }
 
         throw new FetchError(
-          `HTTP ${response.status}: ${response.statusText}`,
+          `HTTP ${String(response.status)}: ${response.statusText}`,
           response.status,
           response,
         );
@@ -71,12 +73,12 @@ export async function fetchWithRetry(
       lastError = error as Error;
 
       if (error instanceof Error && error.name === 'AbortError') {
-        throw new FetchError(`Request timeout after ${timeout}ms`);
+        throw new FetchError(`Request timeout after ${String(timeout)}ms`);
       }
 
       if (attempt < retries) {
         const delay = retryDelay * (attempt + 1);
-        logger.warn(`Request failed: ${error}. Retrying after ${delay}ms`);
+        logger.warn(`Request failed: ${String(error)}. Retrying after ${String(delay)}ms`);
         await sleep(delay);
         continue;
       }
@@ -87,17 +89,32 @@ export async function fetchWithRetry(
 }
 
 export async function fetchJSON<T>(url: string, options?: FetchOptions): Promise<T> {
-  const response = await fetchWithRetry(url, {
-    ...options,
-    headers: {
-      Accept: 'application/json',
-      ...options?.headers,
-    },
-  });
+  const mergedHeaders: Record<string, string> = {
+    Accept: 'application/json',
+  };
+  
+  if (options?.headers) {
+    if (options.headers instanceof Headers) {
+      options.headers.forEach((value, key) => {
+        mergedHeaders[key] = value;
+      });
+    } else if (Array.isArray(options.headers)) {
+      options.headers.forEach(([key, value]) => {
+        mergedHeaders[key] = value;
+      });
+    } else {
+      Object.assign(mergedHeaders, options.headers);
+    }
+  }
+  
+  const fetchOptions: FetchOptions = options ? { ...options } : {};
+  fetchOptions.headers = mergedHeaders;
+  
+  const response = await fetchWithRetry(url, fetchOptions);
 
   try {
     return (await response.json()) as T;
-  } catch (error) {
+  } catch {
     throw new FetchError('Invalid JSON response');
   }
 }

@@ -13,7 +13,7 @@ const logger = pino({
   level: config.logLevel,
 }, pino.destination({ dest: 2, sync: false })); // 2 = stderr
 
-export async function createMCPServer() {
+export function createMCPServer() {
   const server = new Server(
     {
       name: 'mcp-marvel-rivals',
@@ -29,7 +29,7 @@ export async function createMCPServer() {
   const provider = new MarvelsApiProvider(config.marvelsApiUrl);
 
   // Handle list_tools request
-  server.setRequestHandler(ListToolsRequestSchema, async () => {
+  server.setRequestHandler(ListToolsRequestSchema, () => {
     return {
       tools: [
         {
@@ -299,7 +299,7 @@ export async function createMCPServer() {
 }
 
 export async function startMCPServer() {
-  const server = await createMCPServer();
+  const server = createMCPServer();
   const transport = new StdioServerTransport();
   
   await server.connect(transport);
