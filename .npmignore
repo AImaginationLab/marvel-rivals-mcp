@@ -1,0 +1,39 @@
+# Source files
+src/
+bin/cli.ts
+
+# Config files
+tsconfig.json
+tsup.config.ts
+vitest.config.ts
+eslint.config.js
+.prettierrc
+.editorconfig
+.nvmrc
+
+# Development files
+tests/
+examples/
+coverage/
+*.test.ts
+test-mcp.js
+
+# Build artifacts
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.*
+
+# Git
+.git/
+.github/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Keep dist and bin/cli.js
