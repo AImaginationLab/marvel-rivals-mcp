@@ -104,7 +104,7 @@ export async function fetchWithRetry(url: string, options: FetchOptions = {}): P
 export async function fetchJSON<T>(url: string, options?: FetchOptions): Promise<T> {
   const mergedHeaders: Record<string, string> = {
     Accept: 'application/json',
-    'User-Agent': 'marvel-rivals-mcp/0.0.5 (https://github.com/AImaginationLab/marvel-rivals-mcp)',
+    'User-Agent': 'marvel-rivals-mcp/0.0.6 (https://github.com/AImaginationLab/marvel-rivals-mcp)',
   };
 
   if (options?.headers) {
