@@ -5,7 +5,7 @@ A Model Context Protocol (MCP) server that provides access to Marvel Rivals game
 ## Installation
 
 ```bash
-npx @aimaginationlab/mcp-marvel-rivals
+npx @aimaginationlab/marvel-rivals-mcp
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ Add to your Claude Desktop configuration:
   "mcpServers": {
     "marvel-rivals": {
       "command": "npx",
-      "args": ["@aimaginationlab/mcp-marvel-rivals"]
+      "args": ["@aimaginationlab/marvel-rivals-mcp"]
     }
   }
 }
