@@ -61,8 +61,19 @@ export async function fetchWithRetry(
           continue;
         }
 
+        // Try to get more details from the response for debugging
+        let errorDetails = '';
+        try {
+          const text = await response.text();
+          if (text) {
+            errorDetails = ` - ${text}`;
+          }
+        } catch {
+          // Ignore if we can't read the body
+        }
+        
         throw new FetchError(
-          `HTTP ${String(response.status)}: ${response.statusText}`,
+          `HTTP ${String(response.status)}: ${response.statusText}${errorDetails}`,
           response.status,
           response,
         );

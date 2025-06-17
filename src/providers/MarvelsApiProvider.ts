@@ -44,7 +44,7 @@ export class MarvelsApiProvider implements IProvider {
 
   async getHeroInfo(identifier: string): Promise<HeroFull> {
     const [info, abilities] = await Promise.all([
-      this.request<HeroFull>(`/heroes/information/${identifier}`),
+      this.request<HeroFull>(`/heroes/information/identifier?id=${identifier}`),
       this.getHeroAbilities(identifier),
     ]);
     return { ...info, abilities };
