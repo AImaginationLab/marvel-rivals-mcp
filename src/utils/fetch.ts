@@ -40,12 +40,12 @@ export async function fetchWithRetry(url: string, options: FetchOptions = {}): P
       logger.debug(`Making request to: ${url}`);
       logger.debug(`Request options: ${JSON.stringify(fetchOptions)}`);
 
-      const response = await fetch(url, {
-        ...fetchOptions,
-        signal: controller.signal,
-      });
-
-      clearTimeout(timeoutId);
+      let response: Response;
+      try {
+        response = await fetch(url, { ...fetchOptions, signal: controller.signal });
+      } finally {
+        clearTimeout(timeoutId);
+      }
 
       if (!response.ok) {
         if (response.status === 429) {

@@ -48,7 +48,7 @@ export class MarvelsApiProvider implements IProvider {
 
   async getHeroInfo(identifier: string): Promise<HeroFull> {
     const [info, abilities] = await Promise.all([
-      this.request<HeroFull>(`/heroes/information/${identifier}`),
+      this.request<HeroFull>(`/heroes/information/${encodeURIComponent(identifier)}`),
       this.getHeroAbilities(identifier),
     ]);
     return { ...info, abilities };
@@ -75,7 +75,7 @@ export class MarvelsApiProvider implements IProvider {
   }
 
   async getItemsByType(type: 'NAMEPLATE' | 'MVP' | 'EMOTE' | 'SPRAY'): Promise<Item[]> {
-    return this.request<Item[]>(`/items/${type}`, { item_type: type });
+    return this.request<Item[]>(`/items/${encodeURIComponent(type)}`, { item_type: type });
   }
 
   async listMaps(): Promise<GameMap[]> {
@@ -85,11 +85,11 @@ export class MarvelsApiProvider implements IProvider {
   async filterMaps(
     filter: 'convoy' | 'convergence' | 'competitive' | 'casual',
   ): Promise<GameMap[]> {
-    return this.request<GameMap[]>(`/maps/${filter}`);
+    return this.request<GameMap[]>(`/maps/${encodeURIComponent(filter)}`);
   }
 
   async getPlayerProfile(identifier: string): Promise<PlayerProfile> {
-    return this.request<PlayerProfile>(`/player/profile/${identifier}`);
+    return this.request<PlayerProfile>(`/player/profile/${encodeURIComponent(identifier)}`);
   }
 
   async searchPlayer(username: string): Promise<PlayerSearchResult> {
@@ -97,6 +97,6 @@ export class MarvelsApiProvider implements IProvider {
   }
 
   async getPlayerMatchHistory(identifier: string): Promise<MatchHistory> {
-    return this.request<MatchHistory>(`/player/${identifier}/match-history`);
+    return this.request<MatchHistory>(`/player/${encodeURIComponent(identifier)}/match-history`);
   }
 }

@@ -94,5 +94,20 @@ describe('MarvelsApiProvider', () => {
       const result = await provider.searchPlayer('testplayer');
       expect(result).toEqual(mockPlayers);
     });
+
+    it('should properly encode special characters in usernames', async () => {
+      const mockPlayers = [
+        { id: '456', username: 'test player', rank: 'Silver' },
+      ];
+
+      server.use(
+        http.get(`${baseUrl}/search_player/test%20player`, () => {
+          return HttpResponse.json(mockPlayers);
+        })
+      );
+
+      const result = await provider.searchPlayer('test player');
+      expect(result).toEqual(mockPlayers);
+    });
   });
 });
