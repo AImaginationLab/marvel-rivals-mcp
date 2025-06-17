@@ -1,6 +1,6 @@
 {
   "name": "@aimaginationlab/marvel-rivals-mcp",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Model Context Protocol server for Marvel Rivals API",
   "type": "module",
   "main": "./dist/index.js",
