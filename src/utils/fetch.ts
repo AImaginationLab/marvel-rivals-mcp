@@ -48,11 +48,6 @@ export async function fetchWithRetry(url: string, options: FetchOptions = {}): P
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        logger.debug(`Response not OK: ${String(response.status)} ${response.statusText} for ${url}`);
-        logger.debug(
-          `Response headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()))}`,
-        );
-
         if (response.status === 429) {
           const retryAfter = response.headers.get('Retry-After');
           const delay = retryAfter ? parseInt(retryAfter, 10) * 1000 : retryDelay * (attempt + 1);
