@@ -25,10 +25,7 @@ async function sleep(ms: number): Promise<void> {
   });
 }
 
-export async function fetchWithRetry(
-  url: string,
-  options: FetchOptions = {},
-): Promise<Response> {
+export async function fetchWithRetry(url: string, options: FetchOptions = {}): Promise<Response> {
   const { timeout = 30000, retries = 3, retryDelay = 1000, ...fetchOptions } = options;
 
   let lastError: Error | undefined;
@@ -36,7 +33,12 @@ export async function fetchWithRetry(
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => { controller.abort(); }, timeout);
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+      }, timeout);
+
+      logger.debug(`Making request to: ${url}`);
+      logger.debug(`Request options: ${JSON.stringify(fetchOptions)}`);
 
       const response = await fetch(url, {
         ...fetchOptions,
@@ -46,6 +48,11 @@ export async function fetchWithRetry(
       clearTimeout(timeoutId);
 
       if (!response.ok) {
+        logger.debug(`Response not OK: ${String(response.status)} ${response.statusText} for ${url}`);
+        logger.debug(
+          `Response headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()))}`,
+        );
+
         if (response.status === 429) {
           const retryAfter = response.headers.get('Retry-After');
           const delay = retryAfter ? parseInt(retryAfter, 10) * 1000 : retryDelay * (attempt + 1);
@@ -71,7 +78,7 @@ export async function fetchWithRetry(
         } catch {
           // Ignore if we can't read the body
         }
-        
+
         throw new FetchError(
           `HTTP ${String(response.status)}: ${response.statusText}${errorDetails}`,
           response.status,
@@ -102,8 +109,9 @@ export async function fetchWithRetry(
 export async function fetchJSON<T>(url: string, options?: FetchOptions): Promise<T> {
   const mergedHeaders: Record<string, string> = {
     Accept: 'application/json',
+    'User-Agent': 'marvel-rivals-mcp/0.0.5 (https://github.com/AImaginationLab/marvel-rivals-mcp)',
   };
-  
+
   if (options?.headers) {
     if (options.headers instanceof Headers) {
       options.headers.forEach((value, key) => {
@@ -117,10 +125,9 @@ export async function fetchJSON<T>(url: string, options?: FetchOptions): Promise
       Object.assign(mergedHeaders, options.headers);
     }
   }
-  
+
   const fetchOptions: FetchOptions = options ? { ...options } : {};
   fetchOptions.headers = mergedHeaders;
-  
   const response = await fetchWithRetry(url, fetchOptions);
 
   try {

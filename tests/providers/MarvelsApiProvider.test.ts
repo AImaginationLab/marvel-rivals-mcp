@@ -62,12 +62,8 @@ describe('MarvelsApiProvider', () => {
       ];
 
       server.use(
-        http.get(`${baseUrl}/heroes/information/identifier`, ({ request }) => {
-          const url = new URL(request.url);
-          if (url.searchParams.get('id') === 'spider-man') {
-            return HttpResponse.json(mockHeroInfo);
-          }
-          return HttpResponse.json({});
+        http.get(`${baseUrl}/heroes/information/spider-man`, () => {
+          return HttpResponse.json(mockHeroInfo);
         }),
         http.get(`${baseUrl}/heroes/abilities/identifier`, ({ request }) => {
           const url = new URL(request.url);
